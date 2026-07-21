@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*.jpg
+!192301809.jpg
+!bg.jpg
+*.agents/
