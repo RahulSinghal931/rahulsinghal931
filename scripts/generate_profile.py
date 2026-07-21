@@ -5,9 +5,11 @@ from __future__ import annotations
 
 import html
 import base64
+import hashlib
 import io
 import json
 import os
+import re
 import sys
 import calendar
 import urllib.error
@@ -22,6 +24,7 @@ from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "profile.json"
 OUTPUT_PATH = ROOT / "assets" / "profile-terminal.svg"
+README_PATH = ROOT / "README.md"
 ASCII_WIDTH = 1000
 ASCII_HEIGHT = 58
 CARD_WIDTH = 985
@@ -125,6 +128,23 @@ def background_data_uri(config: dict) -> str:
     background.save(encoded, format="JPEG", quality=82, optimize=True, progressive=True)
     payload = base64.b64encode(encoded.getvalue()).decode("ascii")
     return f"data:image/jpeg;base64,{payload}"
+
+
+def update_readme_cache_key(svg: str) -> str:
+    """Give each generated SVG a content-based URL so GitHub cannot show a stale card."""
+    cache_key = hashlib.sha256(svg.encode("utf-8")).hexdigest()[:12]
+    image_url = f"./assets/profile-terminal.svg?v={cache_key}"
+    readme = README_PATH.read_text(encoding="utf-8")
+    updated, replacements = re.subn(
+        r'\./assets/profile-terminal\.svg(?:\?v=[^"\s>]+)?',
+        image_url,
+        readme,
+    )
+    if replacements == 0:
+        raise RuntimeError("README does not contain the generated profile image URL")
+    if updated != readme:
+        README_PATH.write_text(updated, encoding="utf-8", newline="\n")
+    return cache_key
 
 
 def setting_percent(settings: dict, key: str, default: float) -> float:
@@ -469,21 +489,23 @@ def main() -> int:
             )
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, RuntimeError):
             pass
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(
-        render_svg(
-            config,
-            user,
-            repos,
-            languages,
-            ascii_portrait(avatar, config.get("ascii", {})),
-            commits,
-            contributed,
-            annual_contributions,
-        ),
-        encoding="utf-8",
+    svg = render_svg(
+        config,
+        user,
+        repos,
+        languages,
+        ascii_portrait(avatar, config.get("ascii", {})),
+        commits,
+        contributed,
+        annual_contributions,
     )
-    print(f"Generated {OUTPUT_PATH.relative_to(ROOT)} for @{username}")
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_text(svg, encoding="utf-8", newline="\n")
+    cache_key = update_readme_cache_key(svg)
+    print(
+        f"Generated {OUTPUT_PATH.relative_to(ROOT)} for @{username} "
+        f"(cache key: {cache_key})"
+    )
     return 0
 
 
