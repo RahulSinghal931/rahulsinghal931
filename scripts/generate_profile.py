@@ -43,6 +43,10 @@ DOT_COLOR = "#64748b"
 SUCCESS_COLOR = "#67e8f9"
 ERROR_COLOR = "#f85149"
 CLASSIFIED_COLOR = "#b32828"
+ORBIT_COLOR = "#d2d6d8"
+ORBIT_OPACITY = 0.20
+ORBIT_CENTER_COLOR = "#f7b267"
+ORBIT_CENTER_OPACITY = 0.5
 
 
 def api_get(path: str, token: str = "") -> dict | list:
@@ -292,6 +296,8 @@ def render_svg(
 ) -> str:
     background_uri = background_data_uri(config)
     background_overlay = min(1.0, max(0.0, float(config.get("background_overlay", 0.5))))
+    orbit_opacity = min(1.0, max(0.0, float(ORBIT_OPACITY)))
+    orbit_center_opacity = min(1.0, max(0.0, float(ORBIT_CENTER_OPACITY)))
     ascii_settings = config.get("ascii", {})
     name = config.get("name") or user.get("name") or user["login"]
     name_parts = name.lower().split()
@@ -347,7 +353,7 @@ def render_svg(
     out.extend([
         f'<rect width="{CARD_WIDTH}" height="{CARD_HEIGHT}" rx="15" fill="{BACKGROUND_OVERLAY_COLOR}" fill-opacity="{background_overlay:g}"/>',
         f'<rect x="1" y="1" width="{CARD_WIDTH - 2}" height="{CARD_HEIGHT - 2}" rx="14" fill="none" stroke="{VALUE_COLOR}" stroke-opacity=".18"/>',
-        f'<g fill="none" stroke="{VALUE_COLOR}" stroke-opacity=".11"><ellipse cx="770" cy="245" rx="250" ry="106" transform="rotate(-18 770 245)"/><ellipse cx="770" cy="245" rx="190" ry="290" transform="rotate(32 770 245)"/><ellipse cx="770" cy="245" rx="315" ry="155" transform="rotate(14 770 245)"/><circle cx="770" cy="245" r="5" fill="{KEY_COLOR}" stroke="none"/><circle cx="531" cy="322" r="3" fill="{VALUE_COLOR}" stroke="none"/></g>',
+        f'<g fill="none" stroke="{ORBIT_COLOR}" stroke-opacity="{orbit_opacity:g}"><ellipse cx="770" cy="245" rx="250" ry="106" transform="rotate(-18 770 245)"/><ellipse cx="770" cy="245" rx="190" ry="290" transform="rotate(32 770 245)"/><ellipse cx="770" cy="245" rx="315" ry="155" transform="rotate(14 770 245)"/><circle cx="770" cy="245" r="5" fill="{ORBIT_CENTER_COLOR}" fill-opacity="{orbit_center_opacity:g}" stroke="none"/><circle cx="531" cy="322" r="3" fill="{VALUE_COLOR}" stroke="none"/></g>',
         f'<svg x="{PORTRAIT_X}" y="{PORTRAIT_Y}" width="{portrait_width:g}" height="{portrait_height:g}" viewBox="0 0 {natural_width:g} {natural_height:g}" preserveAspectRatio="xMidYMid slice" overflow="hidden">',
         f'<text fill="{FONT_COLOR}" font-size="{ASCII_RENDER_FONT_SIZE:g}" xml:space="preserve">',
     ])
@@ -358,21 +364,23 @@ def render_svg(
     out.extend([
         text(30, terminal_name),
         text(30, " " * 25 + "-" + "—" * 42 + "-", "cc"),
-        field_line(50, "Orbit", config.get("orbit")),
+        field_line(50, "Mission.Objective", config.get("mission_objective")),
         field_line(70, "Mission.Elapsed", uptime),
         field_line(90, "Organization", config.get("organization")),
         field_line(110, "Mission.Role", config.get("flight_kernel")),
         field_line(130, "Toolchain", config.get("toolchain")),
-        text(170, "- Flight Software " + "—" * 38),
-        field_line(190, "Languages.Code", programming),
-        field_line(210, "Domain", config.get("software_domain")),
-        field_line(230, "Engineering.Mode", config.get("engineering_mode")),
-        field_line(250, "Languages.Human", config.get("languages_real")),
-        text(290, "- Mission Link " + "—" * 42),
-        field_line(310, "Email.Personal", config.get("email_personal")),
-        field_line(330, "Email.Work", config.get("email_work")),
-        field_line(350, "LinkedIn", config.get("linkedin")),
-        field_line(370, "GitHub", user.get("html_url")),
+        field_line(150, "Languages.Human", config.get("languages_real")),
+        text(180, "- Flight Systems " + "—" * 39),
+        field_line(200, "Languages.Code", programming),
+        field_line(220, "Domain", config.get("software_domain")),
+        field_line(240, "Current.Build", config.get("current_build")),
+        field_line(260, "Engineering.Values", config.get("engineering_values")),
+        field_line(280, "Engineering.Mode", config.get("engineering_mode")),
+        text(310, "- Mission Link " + "—" * 42),
+        field_line(330, "Email.Personal", config.get("email_personal")),
+        field_line(350, "Email.Work", config.get("email_work")),
+        field_line(370, "LinkedIn", config.get("linkedin")),
+        field_line(390, "GitHub", user.get("html_url")),
         text(430, "- Mission Telemetry " + "—" * 37),
         f'<text x="{RIGHT_X}" y="450"><tspan class="cc">. </tspan><tspan class="key">Commits.Indexed</tspan>: <tspan class="value">{commit_count:,}</tspan> | <tspan class="key">Repos.Contributed</tspan>: <tspan class="value">{contributed_count}</tspan></text>',
         f'<text x="{RIGHT_X}" y="470"><tspan class="cc">. </tspan><tspan class="key">Contributions.365d</tspan>: <tspan class="value">{annual_contributions:,}</tspan> | <tspan class="key">Private.Work</tspan>: <tspan class="classified">CLASSIFIED</tspan></text>',
