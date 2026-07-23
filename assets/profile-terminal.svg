@@ -71,7 +71,7 @@
 <text x="425" y="30">rahul@flight-dynamics</text>
 <text x="425" y="30" class="cc">                         -——————————————————————————————————————————-</text>
 <text x="425" y="50"><tspan class="cc">. </tspan><tspan class="key">Mission.Objective</tspan>:<tspan class="cc"> ....... </tspan><tspan class="value">Contribute to Safer Spaceflight</tspan></text>
-<text x="425" y="70"><tspan class="cc">. </tspan><tspan class="key">Mission.Elapsed</tspan>:<tspan class="cc"> ............. </tspan><tspan class="value">24 years, 11 months, 7 days</tspan></text>
+<text x="425" y="70"><tspan class="cc">. </tspan><tspan class="key">Mission.Elapsed</tspan>:<tspan class="cc"> ............. </tspan><tspan class="value">24 years, 11 months, 8 days</tspan></text>
 <text x="425" y="90"><tspan class="cc">. </tspan><tspan class="key">Organization</tspan>:<tspan class="cc"> ............................. </tspan><tspan class="value">GalaxEye Space</tspan></text>
 <text x="425" y="110"><tspan class="cc">. </tspan><tspan class="key">Mission.Role</tspan>:<tspan class="cc"> ..... </tspan><tspan class="value">Lead, Mission Design &amp; Flight Dynamics</tspan></text>
 <text x="425" y="130"><tspan class="cc">. </tspan><tspan class="key">Toolchain</tspan>:<tspan class="cc"> .............. </tspan><tspan class="value">Python, Rust, MATLAB, JavaScript</tspan></text>
@@ -89,6 +89,6 @@
 <text x="425" y="390"><tspan class="cc">. </tspan><tspan class="key">GitHub</tspan>:<tspan class="cc"> ............... </tspan><tspan class="value">https://github.com/RahulSinghal931</tspan></text>
 <text x="425" y="430">- Mission Telemetry —————————————————————————————————————</text>
 <text x="425" y="450"><tspan class="cc">. </tspan><tspan class="key">Commits.Indexed</tspan>: <tspan class="value">1,672</tspan> | <tspan class="key">Repos.Contributed</tspan>: <tspan class="value">23</tspan></text>
-<text x="425" y="470"><tspan class="cc">. </tspan><tspan class="key">Contributions.365d</tspan>: <tspan class="value">1,098</tspan> | <tspan class="key">Private.Work</tspan>: <tspan class="classified">CLASSIFIED</tspan></text>
-<text x="425" y="490"><tspan class="cc">. </tspan><tspan class="key">Automation</tspan>: <tspan class="add">NOMINAL</tspan><tspan class="cc"> · daily telemetry · </tspan><tspan class="value">22 Jul 2026</tspan></text>
+<text x="425" y="470"><tspan class="cc">. </tspan><tspan class="key">Contributions.365d</tspan>: <tspan class="value">1,162</tspan> | <tspan class="key">Private.Work</tspan>: <tspan class="classified">CLASSIFIED</tspan></text>
+<text x="425" y="490"><tspan class="cc">. </tspan><tspan class="key">Automation</tspan>: <tspan class="add">NOMINAL</tspan><tspan class="cc"> · daily telemetry · </tspan><tspan class="value">23 Jul 2026</tspan></text>
 </svg>
